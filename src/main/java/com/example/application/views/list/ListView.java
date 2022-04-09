@@ -18,7 +18,8 @@ public class ListView extends VerticalLayout {
         add(new H1("Hello world"));
         add(new H2("Testowy nagłówek"));
 
-        add(new Button("cokolwiek"));
+        add(new Button("przycisk"));
+        // dodawanie nowego przycisku bedzei tutaj
 
     }
 }
