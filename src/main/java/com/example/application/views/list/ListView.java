@@ -21,11 +21,7 @@ public class ListView extends VerticalLayout {
         add(new Button("przycisk"));
         // dodawanie nowego przycisku bedzei tutaj
 
-        add(new Button("ok"));
-        // dodawanie nowego przycisku bedzei tutaj
 
-        add(new Button("zatwierdz"));
-        // dodawanie nowego przycisku bedzei tutaj
 
         System.out.println("hello world");
 
