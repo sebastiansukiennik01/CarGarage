@@ -24,5 +24,8 @@ public class ListView extends VerticalLayout {
         add(new Button("ok"));
         // dodawanie nowego przycisku bedzei tutaj
 
+        add(new Button("zatwierdz"));
+        // dodawanie nowego przycisku bedzei tutaj
+
     }
 }
