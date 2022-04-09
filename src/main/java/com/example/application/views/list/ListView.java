@@ -1,5 +1,7 @@
 package com.example.application.views.list;
 
+import com.vaadin.flow.component.board.Board;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
@@ -15,6 +17,8 @@ public class ListView extends VerticalLayout {
     public ListView() {
         add(new H1("Hello world"));
         add(new H2("Testowy nagłówek"));
-    }
 
+        add(new Button("cokolwiek"));
+
+    }
 }
