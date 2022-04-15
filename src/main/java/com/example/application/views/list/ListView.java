@@ -37,13 +37,13 @@ public class ListView extends VerticalLayout {
         add(addUser);
 
         HorizontalLayout header = new HorizontalLayout(klienci, addUser);
-        header.setAlignItems(Alignment.CENTER);
+        header.setAlignItems(Alignment.CENTER); // wydaje mi sie że powinno tak ładnie to ułożyc ale coś niedziła
         header.getThemeList().clear();
         add(header);
 
         Button editProfile = new Button("Edytuj Klienta");
         editProfile.setEnabled(false);
-        editProfile.setAutofocus(true);
+        editProfile.setAutofocus(true); // możliwość zatwierdzeniam enter gdy jest focus
         add(editProfile);
 
         Button usluga = new Button("Dodaj usluge");
@@ -58,8 +58,8 @@ public class ListView extends VerticalLayout {
 
         Button delete = new Button("Usuń");
         delete.setEnabled(false);
-        delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
-        delete.getStyle().set("margin-inline-start", "auto");
+        delete.addThemeVariants(ButtonVariant.LUMO_ERROR); // na czerwono
+        //delete.getStyle().set("margin-inline-start", "auto"); //nic u nas nie zmienia chyba
         delete.setAutofocus(true);
         add(delete);
 
@@ -70,8 +70,8 @@ public class ListView extends VerticalLayout {
         grid.addColumn(Klient::getNrTelefonu).setHeader("numer telefonu");
         grid.addSelectionListener(selection -> {
             int size = selection.getAllSelectedItems().size();
-            boolean isSingleSelection = size == 1;
-            editProfile.setEnabled(isSingleSelection);
+            boolean isSingleSelection = size == 1; // prawda gdy 1 zaznaczony
+            editProfile.setEnabled(isSingleSelection); // daje możliwośc użycia gdy zaznaczony 1
             usluga.setEnabled(isSingleSelection);
             samochody.setEnabled(isSingleSelection);
 
