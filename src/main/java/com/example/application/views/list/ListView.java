@@ -1,35 +1,92 @@
 package com.example.application.views.list;
 
+import com.example.application.Klienci;
+import com.example.application.Klient;
+import com.example.application.Samochod;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.board.Board;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.charts.model.Dial;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 @PageTitle("list")
 @Route(value = "")
 public class ListView extends VerticalLayout {
 
     public ListView() {
-        add(new H1("Car garage"));
-        add(new Text("Tu sobie porobimy zakładki klasy i będzie gituwa\n  Dokumentacja z wszystkimi componentami: https://vaadin.com/docs/latest/ds/components"));
+        H2 klienci = new H2("Klienci");
+        klienci.getStyle().set("margin", "0 auto 0 0");
+        add(klienci);
 
-        Dialog dialog = new Dialog();
-        dialog.add("Co za wariat");
+        Button addUser = new Button("Dodaj klienta");
+        addUser.setAutofocus(true);
+        add(addUser);
 
-        Button button = new Button("Nie klikniesz", e -> dialog.open());
-        add(dialog, button);
+        HorizontalLayout header = new HorizontalLayout(klienci, addUser);
+        header.setAlignItems(Alignment.CENTER);
+        header.getThemeList().clear();
+        add(header);
+
+        Button editProfile = new Button("Edytuj Klienta");
+        editProfile.setEnabled(false);
+        editProfile.setAutofocus(true);
+        add(editProfile);
+
+        Button usluga = new Button("Dodaj usluge");
+        usluga.setEnabled(false);
+        usluga.setAutofocus(true);
+        add(usluga);
+
+        Button samochody = new Button("Pokaż samochody");
+        samochody.setEnabled(false);
+        samochody.setAutofocus(true);
+        add(samochody);
+
+        Button delete = new Button("Usuń");
+        delete.setEnabled(false);
+        delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        delete.getStyle().set("margin-inline-start", "auto");
+        delete.setAutofocus(true);
+        add(delete);
+
+        Grid<Klient> grid = new Grid<>(Klient.class, false);
+        grid.setSelectionMode(Grid.SelectionMode.MULTI);
+        grid.addColumn(Klient::getImie).setHeader("Imie");
+        grid.addColumn(Klient::getNazwisko).setHeader("Nazisko");
+        grid.addColumn(Klient::getNrTelefonu).setHeader("numer telefonu");
+        grid.addSelectionListener(selection -> {
+            int size = selection.getAllSelectedItems().size();
+            boolean isSingleSelection = size == 1;
+            editProfile.setEnabled(isSingleSelection);
+            usluga.setEnabled(isSingleSelection);
+            samochody.setEnabled(isSingleSelection);
+
+            delete.setEnabled(size != 0);
+        });
+        Klienci kl = new Klienci();
+        kl.dodaj(new Klient("Adam","Lacd",999000999));
+        kl.dodaj(new Klient("Adams","Lacd",999000999));
+        kl.dodaj(new Klient("Adamy","Lacd",999000999));
+        grid.setItems(kl.klientList);
+        add(grid);
+        HorizontalLayout footer = new HorizontalLayout(editProfile, usluga, samochody, delete);
+        footer.getStyle().set("flex-wrap", "wrap");
+        add(footer);
     }
 
+ }
 
-}
