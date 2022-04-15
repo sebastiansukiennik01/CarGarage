@@ -1,5 +1,4 @@
 package com.example.application;
 
-public class Usluga {
-
+public class Klienci {
 }
