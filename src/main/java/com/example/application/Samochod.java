@@ -4,7 +4,7 @@ public class Samochod {
     public enum marka{Ford,Fiat,Opel,Audi,Ferrari}
     String nazwa;
     String nrRejstracyjny;
-    int Rocznik;
+    int rocznik;
     String model;
     marka marka;
 
@@ -25,11 +25,11 @@ public class Samochod {
     }
 
     public int getRocznik() {
-        return Rocznik;
+        return rocznik;
     }
 
     public void setRocznik(int rocznik) {
-        Rocznik = rocznik;
+        this.rocznik = rocznik;
     }
 
     public String getModel() {
@@ -51,7 +51,7 @@ public class Samochod {
     public Samochod(String nazwa, String nrRejstracyjny, int rocznik, String model, Samochod.marka marka) {
         this.nazwa = nazwa;
         this.nrRejstracyjny = nrRejstracyjny;
-        Rocznik = rocznik;
+        this.rocznik = rocznik;
         this.model = model;
         this.marka = marka;
     }
