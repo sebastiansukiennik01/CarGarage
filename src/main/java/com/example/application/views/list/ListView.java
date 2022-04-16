@@ -2,6 +2,7 @@ package com.example.application.views.list;
 
 import com.example.application.Klienci;
 import com.example.application.Klient;
+import com.example.application.Produkt;
 import com.example.application.Samochod;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.board.Board;
@@ -20,72 +21,37 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
+
 import java.awt.*;
 import java.util.ArrayList;
 
+
+import com.example.application.views.list.ListView;
+import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.HighlightConditions;
+import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.PWA;
+import com.vaadin.flow.theme.Theme;
+
 @PageTitle("Car Garage")
-@Route(value = "")
+@Route(value = "", layout = MainLayout.class)
 public class ListView extends VerticalLayout {
 
+
     public ListView() {
-        H2 klienci = new H2("Klienci");
-        klienci.getStyle().set("margin", "0 auto 0 0");
-        add(klienci);
 
-        Button addUser = new Button("Dodaj klienta");
-        addUser.setAutofocus(true);
-        add(addUser);
 
-        HorizontalLayout header = new HorizontalLayout(klienci, addUser);
-        header.setAlignItems(Alignment.CENTER); // wydaje mi sie że powinno tak ładnie to ułożyc ale coś niedziła
-        header.getThemeList().clear();
-        add(header);
-
-        Button editProfile = new Button("Edytuj Klienta");
-        editProfile.setEnabled(false);
-        editProfile.setAutofocus(true); // możliwość zatwierdzeniam enter gdy jest focus
-        add(editProfile);
-
-        Button usluga = new Button("Dodaj usluge");
-        usluga.setEnabled(false);
-        usluga.setAutofocus(true);
-        add(usluga);
-
-        Button samochody = new Button("Pokaż samochody");
-        samochody.setEnabled(false);
-        samochody.setAutofocus(true);
-        add(samochody);
-
-        Button delete = new Button("Usuń");
-        delete.setEnabled(false);
-        delete.addThemeVariants(ButtonVariant.LUMO_ERROR); // na czerwono
-        //delete.getStyle().set("margin-inline-start", "auto"); //nic u nas nie zmienia chyba
-        delete.setAutofocus(true);
-        add(delete);
-
-        Grid<Klient> grid = new Grid<>(Klient.class, false);
-        grid.setSelectionMode(Grid.SelectionMode.MULTI);
-        grid.addColumn(Klient::getImie).setHeader("Imie");
-        grid.addColumn(Klient::getNazwisko).setHeader("Nazisko");
-        grid.addColumn(Klient::getNrTelefonu).setHeader("numer telefonu");
-        grid.addSelectionListener(selection -> {
-            int size = selection.getAllSelectedItems().size();
-            boolean isSingleSelection = size == 1; // prawda gdy 1 zaznaczony
-            editProfile.setEnabled(isSingleSelection); // daje możliwośc użycia gdy zaznaczony 1
-            usluga.setEnabled(isSingleSelection);
-            samochody.setEnabled(isSingleSelection);
-
-            delete.setEnabled(size != 0);
-        });
-        Klienci kl = new Klienci();
-        kl.dodajKlienta(new Klient("Adam","Lacd","999000999"));
-        kl.dodajKlienta(new Klient("Adams","Lacd","999000999"));
-        kl.dodajKlienta(new Klient("Adamy","Lacd","999000999"));
-        grid.setItems(kl.klientList);
-        add(grid);
-        HorizontalLayout footer = new HorizontalLayout(editProfile, usluga, samochody, delete);
-        footer.getStyle().set("flex-wrap", "wrap");
-        add(footer);
     }
 
  }
