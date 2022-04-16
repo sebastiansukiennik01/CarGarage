@@ -23,7 +23,7 @@ import com.vaadin.flow.router.Route;
 import java.awt.*;
 import java.util.ArrayList;
 
-@PageTitle("list")
+@PageTitle("Car Garage")
 @Route(value = "")
 public class ListView extends VerticalLayout {
 
@@ -78,9 +78,9 @@ public class ListView extends VerticalLayout {
             delete.setEnabled(size != 0);
         });
         Klienci kl = new Klienci();
-        kl.dodaj(new Klient("Adam","Lacd",999000999));
-        kl.dodaj(new Klient("Adams","Lacd",999000999));
-        kl.dodaj(new Klient("Adamy","Lacd",999000999));
+        kl.dodajKlienta(new Klient("Adam","Lacd","999000999"));
+        kl.dodajKlienta(new Klient("Adams","Lacd","999000999"));
+        kl.dodajKlienta(new Klient("Adamy","Lacd","999000999"));
         grid.setItems(kl.klientList);
         add(grid);
         HorizontalLayout footer = new HorizontalLayout(editProfile, usluga, samochody, delete);

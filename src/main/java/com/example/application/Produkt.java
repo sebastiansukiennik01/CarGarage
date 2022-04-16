@@ -1,8 +1,8 @@
 package com.example.application;
 
 public class Produkt {
-    public enum jednostka {kg,litr,szt,}
-    int nrProduktu;
+    public enum jednostka {kg, litr, szt}
+    static int nrProduktu = 0;
     String nazwa;
     double ilosc;
     double cena;
@@ -12,8 +12,8 @@ public class Produkt {
         return nrProduktu;
     }
 
-    public void setNrProduktu(int nrProduktu) {
-        this.nrProduktu = nrProduktu;
+    public static void setNrProduktu(int nrProduktu) {
+        Produkt.nrProduktu = nrProduktu;
     }
 
     public String getNazwa() {
@@ -48,8 +48,8 @@ public class Produkt {
         this.jednostka = jednostka;
     }
 
-    public Produkt(int nrProduktu, String nazwa, double ilosc, double cena, Produkt.jednostka jednostka) {
-        this.nrProduktu = nrProduktu;
+    public Produkt(String nazwa, double ilosc, double cena, Produkt.jednostka jednostka) {
+        setNrProduktu(getNrProduktu() + 1);
         this.nazwa = nazwa;
         this.ilosc = ilosc;
         this.cena = cena;
