@@ -29,6 +29,7 @@ public class UslugiView extends VerticalLayout {
         setSizeFull();
         configureGrid();
         configureForm();
+        add(new H1("Usługi"));
         add(getComponents());
     }
 

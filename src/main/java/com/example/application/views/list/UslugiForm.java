@@ -61,7 +61,6 @@ public class UslugiForm extends FormLayout {
         try{
             String message = "";
             Set<Usluga> selected = UslugiView.grid.getSelectedItems();
-            Notification.show(selected.toString());
             if (selected.size() > 0){
                 for(Usluga u : selected){
                     UslugiView.uslugiList.removeUsluga(u);

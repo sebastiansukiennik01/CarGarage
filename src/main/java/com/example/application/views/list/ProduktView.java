@@ -35,6 +35,7 @@ public class ProduktView extends VerticalLayout {
         setSizeFull();
         configureGrid();
         configureForm();
+        add(new H1("Produkty"));
         add(getContent());
     }
 

@@ -33,7 +33,6 @@ public class ProduktForm extends FormLayout {
   ComboBox<Produkt.jednostkaEnum> jednostkaCmb = new ComboBox<>("Jednostka");
   Button saveBtn = new Button("Dodaj", this::save);
   Button deleteBtn = new Button("Usuń", this::remove);
-  Button closeBtn = new Button("Anuluj", this::cancel);
 
   public ProduktForm() {
     addClassName("contact-form");
@@ -50,16 +49,14 @@ public class ProduktForm extends FormLayout {
   private VerticalLayout createButtonsLayout() {
     saveBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
     deleteBtn.addThemeVariants(ButtonVariant.LUMO_ERROR);
-    closeBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
     saveBtn.addClickShortcut(Key.ENTER);
     deleteBtn.addClickShortcut(Key.ESCAPE);
 
     saveBtn.setWidth("250px");
     deleteBtn.setWidth("250px");
-    closeBtn.setWidth("250px");
 
-    VerticalLayout verticalLayout = new VerticalLayout(saveBtn, deleteBtn, closeBtn);
+    VerticalLayout verticalLayout = new VerticalLayout(saveBtn, deleteBtn);
     verticalLayout.setAlignItems(FlexComponent.Alignment.CENTER);
 
     return verticalLayout;
@@ -85,7 +82,6 @@ public class ProduktForm extends FormLayout {
     try{
       String message = "";
       Set<Produkt> selected = ProduktView.grid.getSelectedItems();
-      Notification.show(selected.toString());
       if (selected.size() > 0){
         for(Produkt p : selected){
           ProduktView.productsList.removeProduct(p);
@@ -99,14 +95,4 @@ public class ProduktForm extends FormLayout {
     }
 
   }
-
-  private void cancel(ClickEvent event) {
-    String nazwa = this.produktNameTxt.getValue();
-    String ilosc = String.valueOf(this.iloscNmb.getValue());
-    String cena = String.valueOf(this.cenaNmb.getValue());
-    Produkt.jednostkaEnum jednostka = this.jednostkaCmb.getValue();
-
-    Notification.show(nazwa + " " + ilosc + " " + cena + " " + jednostka);
-  }
-
 }
