@@ -29,6 +29,12 @@ public class Produkty {
 
     //methods
     public void addProducts(Produkt p){
+        for (Produkt produkt : produktList){
+            if(produkt.getNazwa().equals(p.getNazwa()) && produkt.getCena() == p.getCena() && produkt.getJednostka().equals(p.getJednostka())){
+                produkt.setIlosc(produkt.getIlosc() + p.getIlosc()); // if an identical product already exists, then increment its quantity instead of creatinf another product
+                return;
+            }
+        }
         produktList.add(p);
     }
 
