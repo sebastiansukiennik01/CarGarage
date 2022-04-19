@@ -2,9 +2,12 @@ package com.example.application.views.list;
 
 import com.example.application.Klienci;
 import com.example.application.Klient;
+import com.example.application.Produkt;
+import com.example.application.Produkty;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -16,6 +19,7 @@ import com.vaadin.flow.router.Route;
 @Route(value = "klient-view", layout = MainLayout.class)
 public class KlientView extends VerticalLayout {
 
+    /*
     public KlientView(){
         H2 klienci = new H2("Klienci");
         klienci.getStyle().set("margin", "0 auto 0 0");
@@ -75,5 +79,54 @@ public class KlientView extends VerticalLayout {
         HorizontalLayout footer = new HorizontalLayout(editProfile, usluga, samochody, delete);
         footer.getStyle().set("flex-wrap", "wrap");
         add(footer);
+    }
+     */
+
+    static Grid<Klient> grid = new Grid<>(Klient.class, false);
+    static Klienci klienciList = new Klienci(); //tutaj musi być productList = cała lista produktów z bazy danych
+    KlientForm klientForm;
+
+    public Grid<Klient> getGrid() {
+        return grid;
+    }
+
+    public void setGrid(Grid<Klient> grid) {
+        KlientView.grid = grid;
+    }
+
+    public KlientView(){
+        addClassName("klient-view");
+        setSizeFull();
+        configureGrid();
+        configureForm();
+        add(new H1("Klienci"));
+        add(getContent());
+    }
+
+    private HorizontalLayout getContent() {
+        HorizontalLayout content = new HorizontalLayout(grid, klientForm);
+        content.setFlexGrow(2, grid);
+        content.setFlexGrow(1, klientForm);
+        content.addClassNames("content");
+        content.setSizeFull();
+        return content;
+    }
+
+    private void configureGrid() {
+        if (getGrid().getColumns().isEmpty()){
+            grid.addClassNames("klient-grid");
+            grid.setSizeFull();
+            grid.setSelectionMode(Grid.SelectionMode.MULTI);
+            grid.addColumn(Klient::getImie).setHeader("Name").setSortable(true);
+            grid.addColumn(Klient::getNazwisko).setHeader("Surname").setSortable(true);
+            grid.addColumn(Klient::getNrTelefonu).setHeader("Phone number").setSortable(true);
+            grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        }
+    }
+
+    public void configureForm(){
+        addClassName("klient-form");
+        klientForm = new KlientForm();
+        klientForm.setWidth("250px");
     }
 }

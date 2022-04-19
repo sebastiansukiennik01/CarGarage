@@ -29,12 +29,14 @@ public class Klient {
         return nrTelefonu;
     }
 
-    public void setNrTelefonu(String nrTelefonu) {
+    public void setNrTelefonu(String nrTelefonu) throws WrongNumberException {
         if(patternnumber.matcher(nrTelefonu).matches())
             this.nrTelefonu = nrTelefonu;
+        else
+            throw new WrongNumberException("Provided an incorrect number! The phone number should consist of 9 digits!");
     }
 
-    public Klient(String imie, String nazwisko, String nrTelefonu) {
+    public Klient(String imie, String nazwisko, String nrTelefonu) throws WrongNumberException {
         setImie(imie);
         setNazwisko(nazwisko);
         setNrTelefonu(nrTelefonu);

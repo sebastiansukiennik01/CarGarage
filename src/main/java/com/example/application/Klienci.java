@@ -24,7 +24,12 @@ public class Klienci {
     }
 
     //methods
-    public void dodajKlienta(Klient klient) {
+    public void dodajKlienta(Klient klient) throws CustomerExistsException {
+        for(Klient k : klientList){
+            if (k.getNrTelefonu().equals(klient.nrTelefonu)){
+                throw new CustomerExistsException("Customer with exactly the same phone number already exists. Please try again with different number!");
+            }
+        }
         klientList.add(klient);
     }
 
@@ -41,3 +46,4 @@ public class Klienci {
         }
     }
 }
+

@@ -15,15 +15,21 @@ import java.awt.*;
 
 @Route(value = "uslugi-view", layout = MainLayout.class)
 public class UslugiView extends VerticalLayout {
-    Grid<Usluga> grid = new Grid<>(Usluga.class);
+
+    static Grid<Usluga> grid = new Grid<>(Usluga.class, false);
+    static Uslugi uslugiList = new Uslugi(); //tutaj musi być productList = cała lista produktów z bazy danych
     FormLayout uslugaForm = new FormLayout();
 
+    public static Grid<Usluga> getGrid() {
+        return grid;
+    }
 
     public UslugiView(){
         addClassName("usluga-view");
         setSizeFull();
         configureGrid();
         configureForm();
+        add(new H1("Usługi"));
         add(getComponents());
     }
 
@@ -37,11 +43,14 @@ public class UslugiView extends VerticalLayout {
     }
 
     private void configureGrid(){
-        addClassName("usluga-grid");
-        grid.setSizeFull();
-        grid.setColumns("nazwa", "koszt");
-        grid.setHeightFull();
-        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        if (getGrid().getColumns().isEmpty()){
+            addClassName("usluga-grid");
+            grid.setSizeFull();
+            grid.setSelectionMode(Grid.SelectionMode.MULTI);
+            grid.addColumn(Usluga::getNazwa).setHeader("Name").setSortable(true);
+            grid.addColumn(Usluga::getKoszt).setHeader("Price").setSortable(true);
+            grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        }
     }
 
     public void configureForm(){
