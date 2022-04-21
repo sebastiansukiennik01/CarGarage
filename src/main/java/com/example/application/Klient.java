@@ -6,6 +6,7 @@ public class Klient {
     String imie;
     String nazwisko;
     String nrTelefonu;
+    Samochody carList;
 
     Pattern patternnumber = Pattern.compile("^\\d{9}$");
 
@@ -34,6 +35,15 @@ public class Klient {
             this.nrTelefonu = nrTelefonu;
         else
             throw new WrongNumberException("Provided an incorrect number! The phone number should consist of 9 digits!");
+    }
+
+
+    public Samochody getCarList() {
+        return carList;
+    }
+
+    public void setCarList(Samochody carList) {
+        this.carList = carList;
     }
 
     public Klient(String imie, String nazwisko, String nrTelefonu) throws WrongNumberException {

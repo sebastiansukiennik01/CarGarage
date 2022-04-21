@@ -1,19 +1,22 @@
 package com.example.application.views.list;
 
-import com.example.application.Klienci;
-import com.example.application.Klient;
-import com.example.application.Produkt;
-import com.example.application.Produkty;
+import com.example.application.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+
+import java.util.stream.Stream;
 
 @PageTitle("Car Garage")
 @Route(value = "klient-view", layout = MainLayout.class)
@@ -86,6 +89,12 @@ public class KlientView extends VerticalLayout {
     static Klienci klienciList = new Klienci(); //tutaj musi być productList = cała lista produktów z bazy danych
     KlientForm klientForm;
 
+    //for Samochod dialog window
+    static Grid<Samochod> samochodGrid = new Grid<>(Samochod.class, false);
+    static Samochody samochodyList = new Samochody();
+    SamochodForm samochodForm;
+
+
     public Grid<Klient> getGrid() {
         return grid;
     }
@@ -120,13 +129,56 @@ public class KlientView extends VerticalLayout {
             grid.addColumn(Klient::getImie).setHeader("Name").setSortable(true);
             grid.addColumn(Klient::getNazwisko).setHeader("Surname").setSortable(true);
             grid.addColumn(Klient::getNrTelefonu).setHeader("Phone number").setSortable(true);
+            grid.addColumn(
+                    new ComponentRenderer<>(Button::new, (button, person) -> {
+                        button.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+                        button.addClickListener(e -> this.showCustomersCars(person));
+                        button.setText("Show cars");
+                    })).setHeader("Manage");
             grid.getColumns().forEach(col -> col.setAutoWidth(true));
         }
+    }
+
+    private void showCustomersCars(Object person) {
+        Klient klient = (Klient) person;
+        Dialog dialog = new Dialog();
+        dialog.add(new H1("Customers cars"));
+        dialog.add(klient.getImie());
+        configureCarForm();
+        HorizontalLayout content = new HorizontalLayout(samochodGrid, samochodForm);
+        content.setFlexGrow(2, samochodGrid);
+        content.setFlexGrow(1, samochodForm);
+        content.addClassNames("content");
+        content.setSizeFull();
+        dialog.add();
+        dialog.open();
     }
 
     public void configureForm(){
         addClassName("klient-form");
         klientForm = new KlientForm();
         klientForm.setWidth("250px");
+    }
+
+    public void configureCarGrid(Klient klient) {
+        samochodyList = klient.getCarList();
+        if (getGrid().getColumns().isEmpty()) {
+            samochodGrid.addClassNames("samochod-grid");
+            samochodGrid.setSizeFull();
+            samochodGrid.setItems((Stream<Samochod>) klient.getCarList());
+            samochodGrid.setSelectionMode(Grid.SelectionMode.MULTI);
+            samochodGrid.addColumn(Samochod::getNrRejstracyjny).setHeader("Nr Rejestracyjny").setSortable(true);
+            samochodGrid.addColumn(Samochod::getMarka).setHeader("Marka").setSortable(true);
+            samochodGrid.addColumn(Samochod::getModel).setHeader("Model").setSortable(true);
+            samochodGrid.addColumn(Samochod::getRocznik).setHeader("Rocznik").setSortable(true);
+
+            grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        }
+    }
+
+    public void configureCarForm(){
+        samochodForm = new SamochodForm();
+        samochodForm.setWidth("250px");
+        return;
     }
 }
