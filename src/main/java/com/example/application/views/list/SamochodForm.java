@@ -1,10 +1,8 @@
 package com.example.application.views.list;
 
-import com.example.application.Klient;
-import com.example.application.Produkt;
-import com.example.application.Samochod;
-import com.example.application.Usluga;
+import com.example.application.*;
 import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -23,26 +21,39 @@ public class SamochodForm extends FormLayout {
     TextField modelTxt = new TextField("Model");
     TextField nrRejestracyjnyTxt = new TextField("Numer Rejestracyjny");
     NumberField rocznikNmb = new NumberField("Rocznik");
-    ComboBox<Samochod.marka> markaCmb = new ComboBox<>("Jednostka");
+    ComboBox<Samochod.markaEnum> markaCmb = new ComboBox<>("Marka");
     Button zatwierdzBtn = new Button("Dodaj", this::save);
     Button usunBtn = new Button("Usun", this::remove);
+    Button zamknijBtn = new Button("Zamknij", this::close);
 
     public SamochodForm(){
         addClassName("uslugi-form");
-        add(naglowek, markaCmb, modelTxt, rocznikNmb, createButtonsLayout());
+        markaCmb.setItems(Samochod.markaEnum.values());
+
+        markaCmb.setWidth("200px");
+        nrRejestracyjnyTxt.setWidth("200px");
+        modelTxt.setWidth("200px");
+        rocznikNmb.setWidth("200px");
+
+        VerticalLayout verticalLayout = new VerticalLayout(naglowek, nrRejestracyjnyTxt, markaCmb, modelTxt, rocznikNmb);
+        verticalLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+
+        add(verticalLayout, createButtonsLayout());
     }
 
     public VerticalLayout createButtonsLayout(){
         zatwierdzBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         usunBtn.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        zamknijBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
-        zatwierdzBtn.setWidth(modelTxt.getWidth());
-        usunBtn.setWidth(modelTxt.getWidth());
+        zatwierdzBtn.addClickShortcut(Key.ENTER);
+        usunBtn.addClickShortcut(Key.ESCAPE);
 
-        zatwierdzBtn.setWidth("250px");
-        usunBtn.setWidth("250px");
+        zatwierdzBtn.setWidth("200px");
+        usunBtn.setWidth("200px");
+        zamknijBtn.setWidth("200px");
 
-        VerticalLayout verticalLayout = new VerticalLayout(zatwierdzBtn, usunBtn);
+        VerticalLayout verticalLayout = new VerticalLayout(zatwierdzBtn, usunBtn, zamknijBtn);
         verticalLayout.setAlignItems(FlexComponent.Alignment.CENTER);
 
         return verticalLayout;
@@ -56,28 +67,36 @@ public class SamochodForm extends FormLayout {
                     markaCmb.getValue());
 
             KlientView.samochodyList.addSamochod(s);
-            UslugiView.grid.setItems(UslugiView.uslugiList.getUslugiList());
+            KlientView.samochodGrid.setItems(KlientView.samochodyList.getSamochodList());
 
-            //Notification.show("Succesfully added: " + this.nameTxt.getValue() + " " + this.priceNmb.getValue());
+            Notification.show("Succesfully added: " + nrRejestracyjnyTxt.getValue() + " " + markaCmb.getValue() + modelTxt.getValue());
+        }catch (CarExistsException e){
+            Notification.show(e.getMessage());
         }catch (Exception e){
             Notification.show("An error occured. Please try again");
+            Notification.show(e.getMessage());
         }
     }
 
     private void remove(ClickEvent event) {
         try{
             String message = "";
-            Set<Usluga> selected = UslugiView.grid.getSelectedItems();
+            Set<Samochod> selected = KlientView.samochodGrid.getSelectedItems();
             if (selected.size() > 0){
-                for(Usluga u : selected){
-                    UslugiView.uslugiList.removeUsluga(u);
-                    message = message.concat(u.getNazwa() + " " + u.getKoszt() + "\n");
+                for(Samochod s : selected){
+                    KlientView.samochodyList.removeSamochod(s);
+                    message = message.concat(s.getNrRejstracyjny() + " " + s.getMarka() + " " + s.getModel() + "\n");
                 }
-                UslugiView.grid.setItems(UslugiView.uslugiList.getUslugiList());
+                KlientView.samochodGrid.setItems(KlientView.samochodyList.getSamochodList());
             }
             Notification.show("Succesfully deleted: " + message);
         }catch (Exception e){
             Notification.show("An error occured. Please try again");
+            Notification.show(e.getMessage());
         }
+    }
+
+    private void close(ClickEvent event){
+        KlientView.dialog.close();
     }
 }

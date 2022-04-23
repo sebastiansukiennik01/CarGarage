@@ -3,12 +3,15 @@ package com.example.application.views.list;
 import com.example.application.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.charts.model.Dial;
+import com.vaadin.flow.component.charts.model.Position;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -16,6 +19,8 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 @PageTitle("Car Garage")
@@ -90,11 +95,13 @@ public class KlientView extends VerticalLayout {
     KlientForm klientForm;
 
     //for Samochod dialog window
-    static Grid<Samochod> samochodGrid = new Grid<>(Samochod.class, false);
+    static Grid<Samochod> samochodGrid = new Grid<>(Samochod.class);
     static Samochody samochodyList = new Samochody();
+    static Dialog dialog;
+
     SamochodForm samochodForm;
 
-
+    //accessors
     public Grid<Klient> getGrid() {
         return grid;
     }
@@ -103,11 +110,20 @@ public class KlientView extends VerticalLayout {
         KlientView.grid = grid;
     }
 
+    public Grid<Samochod> getSamochodGrid() {
+        return samochodGrid;
+    }
+
+    public void setSamochodGrid(Grid<Samochod> samochodGrid) {
+        KlientView.samochodGrid = samochodGrid;
+    }
+
+
     public KlientView(){
         addClassName("klient-view");
         setSizeFull();
-        configureGrid();
         configureForm();
+        configureGrid();
         add(new H1("Klienci"));
         add(getContent());
     }
@@ -139,46 +155,45 @@ public class KlientView extends VerticalLayout {
         }
     }
 
-    private void showCustomersCars(Object person) {
-        Klient klient = (Klient) person;
-        Dialog dialog = new Dialog();
-        dialog.add(new H1("Customers cars"));
-        dialog.add(klient.getImie());
-        configureCarForm();
-        HorizontalLayout content = new HorizontalLayout(samochodGrid, samochodForm);
-        content.setFlexGrow(2, samochodGrid);
-        content.setFlexGrow(1, samochodForm);
-        content.addClassNames("content");
-        content.setSizeFull();
-        dialog.add();
-        dialog.open();
-    }
-
     public void configureForm(){
         addClassName("klient-form");
         klientForm = new KlientForm();
         klientForm.setWidth("250px");
     }
 
-    public void configureCarGrid(Klient klient) {
-        samochodyList = klient.getCarList();
-        if (getGrid().getColumns().isEmpty()) {
-            samochodGrid.addClassNames("samochod-grid");
-            samochodGrid.setSizeFull();
-            samochodGrid.setItems((Stream<Samochod>) klient.getCarList());
-            samochodGrid.setSelectionMode(Grid.SelectionMode.MULTI);
-            samochodGrid.addColumn(Samochod::getNrRejstracyjny).setHeader("Nr Rejestracyjny").setSortable(true);
-            samochodGrid.addColumn(Samochod::getMarka).setHeader("Marka").setSortable(true);
-            samochodGrid.addColumn(Samochod::getModel).setHeader("Model").setSortable(true);
-            samochodGrid.addColumn(Samochod::getRocznik).setHeader("Rocznik").setSortable(true);
+    private void showCustomersCars(Klient klient) {
+        dialog = new Dialog();
+        samochodyList = klient.getCars();
 
-            grid.getColumns().forEach(col -> col.setAutoWidth(true));
-        }
+        configureCarForm(); //sets up carForm
+        configureCarGrid(klient);  //sets up carGrid
+        dialog.add(new H1("Customers cars"));
+
+        dialog.setWidth("1250px");
+        dialog.add(getCarContent());  //adds grid and form to the dialog window
+        dialog.open();
+    }
+
+    public HorizontalLayout getCarContent(){
+        HorizontalLayout content = new HorizontalLayout(samochodGrid, samochodForm);
+        content.setSizeFull();
+        return content;
+    }
+
+    public void configureCarGrid(Klient klient) {
+        samochodGrid = new Grid<>(Samochod.class);  //resets the grid (creates new one)
+        samochodGrid.setHeight("1000px");
+        samochodGrid.setSelectionMode(Grid.SelectionMode.MULTI);
+
+        ArrayList<Samochod> customerCars = klient.getCars().getSamochodList();
+        samochodGrid.setItems(customerCars);
+
+        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+
     }
 
     public void configureCarForm(){
         samochodForm = new SamochodForm();
-        samochodForm.setWidth("250px");
-        return;
+        samochodForm.setWidth("200px");
     }
 }

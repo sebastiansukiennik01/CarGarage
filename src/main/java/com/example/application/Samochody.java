@@ -6,7 +6,7 @@ import java.util.Optional;
 public class Samochody {
 
     //fields
-    ArrayList<Samochod> samochodList;
+    ArrayList<Samochod> samochodList = new ArrayList<>();
 
     //accessors
     public ArrayList<Samochod> getSamochodList() {
@@ -19,7 +19,6 @@ public class Samochody {
 
     //constructors
     public Samochody() {
-        this.samochodList = new ArrayList<>();
     }
 
     public Samochody(ArrayList<Samochod> samochodList) {
@@ -27,8 +26,14 @@ public class Samochody {
     }
 
     //methods
-    public void addSamochod(Samochod s){
-        samochodList.add(s);
+    public void addSamochod(Samochod samochod) throws CarExistsException{
+
+        for(Samochod s : samochodList){
+            if (s.getNrRejstracyjny().equals(samochod.getNrRejstracyjny())){
+                throw new CarExistsException("Car with exactly the same registration number already exists. Please try again with different number!");
+            }
+        }
+        samochodList.add(samochod);
     }
 
     public void removeSamochod(Samochod s){

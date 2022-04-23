@@ -6,10 +6,11 @@ public class Klient {
     String imie;
     String nazwisko;
     String nrTelefonu;
-    Samochody carList;
+    Samochody cars;
 
     Pattern patternnumber = Pattern.compile("^\\d{9}$");
 
+    //accessors
     public String getImie() {
         return imie;
     }
@@ -38,18 +39,20 @@ public class Klient {
     }
 
 
-    public Samochody getCarList() {
-        return carList;
+    public Samochody getCars() {
+        return cars;
     }
 
-    public void setCarList(Samochody carList) {
-        this.carList = carList;
+    public void setCars(Samochody cars) {
+        this.cars = cars;
     }
 
+    //constructors
     public Klient(String imie, String nazwisko, String nrTelefonu) throws WrongNumberException {
         setImie(imie);
         setNazwisko(nazwisko);
         setNrTelefonu(nrTelefonu);
+        cars = new Samochody();
     }
 
 
