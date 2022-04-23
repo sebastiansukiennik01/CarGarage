@@ -1,20 +1,12 @@
 package com.example.application;
 
 public class Samochod {
-    public enum marka{Ford,Fiat,Opel,Audi,Ferrari}
-    String nazwa;
+    public enum markaEnum {Ford, Fiat, Opel, Audi, Ferrari}
     String nrRejstracyjny;
     int rocznik;
     String model;
-    marka marka;
+    markaEnum marka;
 
-    public String getNazwa() {
-        return nazwa;
-    }
-
-    public void setNazwa(String nazwa) {
-        this.nazwa = nazwa;
-    }
 
     public String getNrRejstracyjny() {
         return nrRejstracyjny;
@@ -40,16 +32,15 @@ public class Samochod {
         this.model = model;
     }
 
-    public Samochod.marka getMarka() {
+    public Samochod.markaEnum getMarka() {
         return marka;
     }
 
-    public void setMarka(Samochod.marka marka) {
+    public void setMarka(Samochod.markaEnum marka) {
         this.marka = marka;
     }
 
-    public Samochod(String nazwa, String nrRejstracyjny, int rocznik, String model, Samochod.marka marka) {
-        this.nazwa = nazwa;
+    public Samochod(String nrRejstracyjny, int rocznik, String model, Samochod.markaEnum marka) {
         this.nrRejstracyjny = nrRejstracyjny;
         this.rocznik = rocznik;
         this.model = model;

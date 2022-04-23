@@ -3,6 +3,7 @@ package com.example.application.views.list;
 import com.example.application.Produkt;
 import com.example.application.Usluga;
 import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -31,8 +32,8 @@ public class UslugiForm extends FormLayout {
         zatwierdzBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         usunBtn.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
-        zatwierdzBtn.setWidth(nameTxt.getWidth());
-        usunBtn.setWidth(nameTxt.getWidth());
+        zatwierdzBtn.addClickShortcut(Key.ENTER);
+        usunBtn.addClickShortcut(Key.ESCAPE);
 
         zatwierdzBtn.setWidth("250px");
         usunBtn.setWidth("250px");
@@ -47,10 +48,8 @@ public class UslugiForm extends FormLayout {
         try{
             Usluga u = new Usluga(this.nameTxt.getValue(),
                     this.priceNmb.getValue());
-
             UslugiView.uslugiList.addUsluga(u);
             UslugiView.grid.setItems(UslugiView.uslugiList.getUslugiList());
-
             Notification.show("Succesfully added: " + this.nameTxt.getValue() + " " + this.priceNmb.getValue());
         }catch (Exception e){
             Notification.show("An error occured. Please try again");

@@ -37,7 +37,7 @@ public class FakturaView extends VerticalLayout {
         addClassName("klient-view");
         setSizeFull();
         configureForm();
-        add(new H1("Klienci"));
+        add(new H1("Faktury"));
         add(getContent());
     }
 
@@ -51,7 +51,11 @@ public class FakturaView extends VerticalLayout {
 
     private void configureForm(){
         clientCmb.setItems(KlientView.klienciList.getKlientList());
-        //carCmb.setItems(SamochodView.samochodyList.getSamochodList());
+
+        clientCmb.addValueChangeListener(valueChangeEvent -> {
+            carCmb.setItems(clientCmb.getValue().getCars().getSamochodList());
+        });
+
         productCmb.setItems(ProduktView.productsList.getProduktList());
         serviceCmb.setItems(UslugiView.uslugiList.getUslugiList());
 
@@ -68,12 +72,13 @@ public class FakturaView extends VerticalLayout {
         summaryTxtArea.setWidthFull();
         summaryTxtArea.setHeight("200px");
         summaryTxtArea.setLabel("Invoice summary");
-        summaryTxtArea.setValue("Szczegóły faktury będą tutaj");
+        summaryTxtArea.setValue("Szczegóły faktury");
     }
 
     private HorizontalLayout createButtonsLayout(){
         summaryBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         clearBtn.addThemeVariants(ButtonVariant.LUMO_ERROR);
+
         summaryBtn.addClickShortcut(Key.ENTER);
         clearBtn.addClickShortcut(Key.ESCAPE);
 
@@ -89,21 +94,27 @@ public class FakturaView extends VerticalLayout {
 
     // ta cała funkcja jest do naprawienia, bo nie wypisuje wyniku do summaryTextArea
     private void summary(ClickEvent<Button> buttonClickEvent) {
+        try{
+            Klient k = this.clientCmb.getValue();
+            Samochod s = this.carCmb.getValue();
+            String d = this.datePicker.getValue().toString();
+            Produkt p = this.productCmb.getValue();
+            Usluga u = this.serviceCmb.getValue();
 
-        Klient k = this.clientCmb.getValue();
-        Samochod s = this.carCmb.getValue();
-        String d = this.datePicker.getValue().toString();
-        Produkt p = this.productCmb.getValue();
-        String u = this.serviceCmb.getValue().toString();
+            String result = k.getImie() + " " + k.getNazwisko() + ", " + k.getNrTelefonu() + "\n" +
+                    s.getMarka() + " " + s.getModel() + ", Nr rej: " + s.getNrRejstracyjny() + "\n" +
+                    p.getNazwa() + " " + p.getCena() + "zł / " + p.getJednostka() + "\n" +
+                    d + "\n" +
+                    u.getNazwa() + " " + u.getKoszt();
+            this.summaryTxtArea.setValue(result);
+            Notification.show("Invoice generated succesfully!");
+        }catch (NullPointerException e){
+            Notification.show("Not enough data to create an invoice. Please select all the fields to generate an invoice");
+        }catch (Exception e){
+            Notification.show("An error occurred. Please try again");
+            Notification.show(e.getMessage());
+        }
 
-
-        String result = k.getImie() + " " + k.getNazwisko() + ", " + k.getNrTelefonu() + "\n" +
-                s.getMarka() + " " + s.getModel() + ", Nr rej: " + s.getNrRejstracyjny() + "\n" +
-                p.getNazwa() + " " + p.getCena() + "zł / " + p.getJednostka() + "\n" +
-                d + "\n" +
-                u;
-        this.summaryTxtArea.setValue(result);
-        Notification.show("Invoice generated succesfully!");
     }
 
     private void clear(ClickEvent<Button> buttonClickEvent){
