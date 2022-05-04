@@ -1,14 +1,25 @@
 package com.example.application;
 
+import com.vaadin.flow.component.charts.events.SeriesAfterAnimateEvent;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.List;
 import java.util.regex.Pattern;
 
+@Entity
 public class Klient {
     String imie;
     String nazwisko;
+    @Id
     String nrTelefonu;
-    Samochody cars;
+    @OneToMany
+    List<Samochod> samochody;
 
-    Pattern patternnumber = Pattern.compile("^\\d{9}$");
+    //Samochody cars;
+
+
 
     //accessors
     public String getImie() {
@@ -27,11 +38,20 @@ public class Klient {
         this.nazwisko = nazwisko;
     }
 
+    public List<Samochod> getSamochody() {
+        return samochody;
+    }
+
+    public void setSamochody(List<Samochod> samochody) {
+        this.samochody = samochody;
+    }
+
     public String getNrTelefonu() {
         return nrTelefonu;
     }
 
     public void setNrTelefonu(String nrTelefonu) throws WrongNumberException {
+        Pattern patternnumber = Pattern.compile("^\\d{9}$");
         if(patternnumber.matcher(nrTelefonu).matches())
             this.nrTelefonu = nrTelefonu;
         else
@@ -39,20 +59,19 @@ public class Klient {
     }
 
 
-    public Samochody getCars() {
+    /*public Samochody getCars() {
         return cars;
     }
 
     public void setCars(Samochody cars) {
         this.cars = cars;
-    }
+    }*/
 
     //constructors
-    public Klient(String imie, String nazwisko, String nrTelefonu) throws WrongNumberException {
+    public Klient(String imie, String nazwisko, String nrTelefonu)  {
         setImie(imie);
         setNazwisko(nazwisko);
-        setNrTelefonu(nrTelefonu);
-        cars = new Samochody();
+        this.nrTelefonu = nrTelefonu;
     }
 
 

@@ -1,7 +1,12 @@
 package com.example.application;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Samochod {
     public enum markaEnum {Ford, Fiat, Opel, Audi, Ferrari}
+    @Id
     String nrRejstracyjny;
     int rocznik;
     String model;

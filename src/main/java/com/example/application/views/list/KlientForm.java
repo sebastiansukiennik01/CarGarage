@@ -64,10 +64,11 @@ public class KlientForm extends FormLayout {
                     this.nrTelefonuTxt.getValue());
 
             KlientView.klienciList.dodajKlienta(k);
+
             KlientView.grid.setItems(KlientView.klienciList.getKlientList());
 
             Notification.show("Succesfully added: " + this.imieTxt.getValue() + " " + this.nazwiskoTxt.getValue() + " " + this.nrTelefonuTxt.getValue());
-        } catch (WrongNumberException | CustomerExistsException e) {
+        } catch (/*WrongNumberException*/  CustomerExistsException e) {
             Notification.show(e.getMessage());
         } catch(Exception e){
             Notification.show("An error occurred. Please try again");

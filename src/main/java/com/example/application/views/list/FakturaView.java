@@ -52,9 +52,9 @@ public class FakturaView extends VerticalLayout {
     private void configureForm(){
         clientCmb.setItems(KlientView.klienciList.getKlientList());
 
-        clientCmb.addValueChangeListener(valueChangeEvent -> {
-            carCmb.setItems(clientCmb.getValue().getCars().getSamochodList());
-        });
+        //clientCmb.addValueChangeListener(valueChangeEvent -> {
+          //  carCmb.setItems(clientCmb.getValue().getCars().getSamochodList());
+       // });
 
         productCmb.setItems(ProduktView.productsList.getProduktList());
         serviceCmb.setItems(UslugiView.uslugiList.getUslugiList());
