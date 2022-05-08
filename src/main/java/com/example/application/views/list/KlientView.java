@@ -163,7 +163,7 @@ public class KlientView extends VerticalLayout {
 
     private void showCustomersCars(Klient klient) {
         dialog = new Dialog();
-        //samochodyList = klient.getCars();
+        samochodyList = klient.getCars();
 
         configureCarForm(); //sets up carForm
         configureCarGrid(klient);  //sets up carGrid
@@ -185,8 +185,10 @@ public class KlientView extends VerticalLayout {
         samochodGrid.setHeight("1000px");
         samochodGrid.setSelectionMode(Grid.SelectionMode.MULTI);
 
-        //ArrayList<Samochod> customerCars = klient.getCars().getSamochodList();
-        //samochodGrid.setItems(customerCars);
+        ArrayList<Samochod> customerCars = klient.getCars().getSamochodList();
+        if (customerCars != null) {
+            samochodGrid.setItems(customerCars);
+        }
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 

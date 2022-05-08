@@ -6,7 +6,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
-public interface KlientRepository extends JpaRepository<Klient, String> {
+/*public interface KlientRepository extends JpaRepository<Klient, String> {
 
 }
 
@@ -18,4 +18,4 @@ class SqlServerDemo{
     public void ready() {
         klientRepository.findAll().forEach(System.out::println);
     }
-}
+}*/

@@ -8,16 +8,13 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.regex.Pattern;
 
-@Entity
 public class Klient {
     String imie;
     String nazwisko;
-    @Id
     String nrTelefonu;
-    @OneToMany
     List<Samochod> samochody;
 
-    //Samochody cars;
+    Samochody cars;
 
 
 
@@ -59,19 +56,20 @@ public class Klient {
     }
 
 
-    /*public Samochody getCars() {
+    public Samochody getCars() {
         return cars;
     }
 
     public void setCars(Samochody cars) {
         this.cars = cars;
-    }*/
+    }
 
     //constructors
     public Klient(String imie, String nazwisko, String nrTelefonu)  {
         setImie(imie);
         setNazwisko(nazwisko);
         this.nrTelefonu = nrTelefonu;
+        this.cars = new Samochody();
     }
 
 
