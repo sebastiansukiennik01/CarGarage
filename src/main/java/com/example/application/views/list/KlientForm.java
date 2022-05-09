@@ -3,25 +3,15 @@ package com.example.application.views.list;
 import com.example.application.*;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.EmailField;
-import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.dom.Element;
-import com.vaadin.flow.dom.ElementFactory;
-import jdk.jshell.spi.ExecutionControlProvider;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 public class KlientForm extends FormLayout {
@@ -63,9 +53,9 @@ public class KlientForm extends FormLayout {
                     this.nazwiskoTxt.getValue(),
                     this.nrTelefonuTxt.getValue());
 
-            KlientView.klienciList.dodajKlienta(k);
-
-            KlientView.grid.setItems(KlientView.klienciList.getKlientList());
+            SqlDbKlient.insertKlient(k);        //inserts client to database
+            KlientView.klienci.dodajKlienta(k);  // add client to local variable, to not call the database again
+            KlientView.grid.setItems(KlientView.klienci.getKlientList()); //update the greed with new klient list
 
             Notification.show("Succesfully added: " + this.imieTxt.getValue() + " " + this.nazwiskoTxt.getValue() + " " + this.nrTelefonuTxt.getValue());
         } catch (/*WrongNumberException*/  CustomerExistsException e) {
@@ -81,12 +71,15 @@ public class KlientForm extends FormLayout {
             Set<Klient> selected = KlientView.grid.getSelectedItems();
             if (selected.size() > 0) {
                 for (Klient k : selected) {
-                    KlientView.klienciList.usunKlienta(k);
+                    SqlDbKlient.removeKlient(k); //removes client from database
+                    KlientView.klienci.usunKlienta(k); //remove klient from local klient List
                     message = message.concat(k.getImie() + " " + k.getNazwisko() + " " + k.getNrTelefonu() + "\n");
                 }
-                KlientView.grid.setItems(KlientView.klienciList.getKlientList());
+                KlientView.grid.setItems(KlientView.klienci.getKlientList());  //update the grid with new klient List
+                Notification.show("Succesfully deleted: " + message);
+            }else{
+                Notification.show("No records selected. Please try again.");
             }
-            Notification.show("Succesfully deleted: " + message);
         } catch (Exception e) {
             Notification.show("An error occurred. Please try again");
         }

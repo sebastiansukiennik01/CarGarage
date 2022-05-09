@@ -3,16 +3,9 @@ package com.example.application.views.list;
 import com.example.application.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.charts.model.Dial;
-import com.vaadin.flow.component.charts.model.Position;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
@@ -21,7 +14,6 @@ import com.vaadin.flow.router.Route;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 @PageTitle("Car Garage")
 @Route(value = "klient-view", layout = MainLayout.class)
@@ -91,7 +83,7 @@ public class KlientView extends VerticalLayout {
      */
 
     static Grid<Klient> grid = new Grid<>(Klient.class, false);
-    static Klienci klienciList = new Klienci(); //tutaj musi być productList = cała lista produktów z bazy danych
+    public static Klienci klienci = SqlDbKlient.getClients(); //tutaj musi być productList = cała lista produktów z bazy danych
     KlientForm klientForm;
 
     //for Samochod dialog window
@@ -138,6 +130,7 @@ public class KlientView extends VerticalLayout {
     }
 
     private void configureGrid() {
+
         if (getGrid().getColumns().isEmpty()){
             grid.addClassNames("klient-grid");
             grid.setSizeFull();
@@ -153,6 +146,13 @@ public class KlientView extends VerticalLayout {
                     })).setHeader("Manage");
             grid.getColumns().forEach(col -> col.setAutoWidth(true));
         }
+
+        ArrayList<Klient> klienciList = klienci.getKlientList();
+        if (klienciList != null) {
+            grid.setItems(klienciList);
+        }
+
+
     }
 
     public void configureForm(){
@@ -189,7 +189,6 @@ public class KlientView extends VerticalLayout {
         if (customerCars != null) {
             samochodGrid.setItems(customerCars);
         }
-
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
     }

@@ -18,9 +18,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.Route;
 
-import java.awt.*;
-import java.time.LocalDate;
-
 @Route(value = "faktura-view", layout = MainLayout.class)
 public class FakturaView extends VerticalLayout {
 
@@ -50,7 +47,7 @@ public class FakturaView extends VerticalLayout {
     }
 
     private void configureForm(){
-        clientCmb.setItems(KlientView.klienciList.getKlientList());
+        clientCmb.setItems(KlientView.klienci.getKlientList());
 
         //clientCmb.addValueChangeListener(valueChangeEvent -> {
           //  carCmb.setItems(clientCmb.getValue().getCars().getSamochodList());

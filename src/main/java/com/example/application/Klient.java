@@ -8,9 +8,14 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.regex.Pattern;
 
+
 public class Klient {
+    @Column(name="Name")
     String imie;
+    @Column(name="Surname")
     String nazwisko;
+    @Id
+    @Column(name="PhoneNumber")
     String nrTelefonu;
     List<Samochod> samochody;
 

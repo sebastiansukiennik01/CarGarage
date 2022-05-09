@@ -38,6 +38,7 @@ public class Application extends SpringBootServletInitializer implements AppShel
 
 }
 
+
 @Component
 @RequiredArgsConstructor
 class SqlServerDEmo{
