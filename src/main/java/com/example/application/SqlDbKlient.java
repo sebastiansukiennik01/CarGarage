@@ -24,7 +24,6 @@ public class SqlDbKlient {
         try(Connection cnn = DriverManager.getConnection(cnnString); Statement statement = cnn.createStatement()){
             rs = statement.executeQuery("SELECT * FROM Clients");
             while(rs.next()){
-                System.out.println(rs.getString(1) + ", " + rs.getString(2) + ", " + rs.getString(3));
                 clients.dodajKlienta(new Klient(rs.getString("PhoneNumber"), rs.getString("Name"), rs.getString("Surname")));
             }
         }catch(SQLException | CustomerExistsException e){
@@ -34,7 +33,6 @@ public class SqlDbKlient {
     }
 
     public static void insertKlient(Klient client) throws SQLException{
-        System.out.println("inserting client..");
         String sql = "INSERT INTO Clients (PhoneNumber, Name, Surname) VALUES ('" + client.getNrTelefonu() + "', '" + client.getImie() + "', '" + client.getNazwisko() + "');";
         try(Connection cnn = DriverManager.getConnection(cnnString);
         PreparedStatement statement = cnn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){

@@ -2,7 +2,7 @@ package com.example.application;
 
 public class Usluga {
 
-    static int idUslugi = 1;
+    public static int idUslugi = 1;
     String nazwa;
     double koszt;
 

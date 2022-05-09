@@ -93,8 +93,8 @@ public class ProduktForm extends FormLayout {
             SqlDbProdukt.removeProduct(p);
             ProduktView.products.removeProduct(p);
             message = message.concat(p.getNrProduktu() + " " + p.getNazwa() + " " + p.getIlosc() + " " + p.getCena() + "/" + p.getJednostka() + "\n");
-            Notification.show("Succesfully deleted: " + message);
             ProduktView.grid.setItems(ProduktView.products.getProduktList());
+            Notification.show("Successfully deleted: " + message);
           }catch (SQLException e){
             Notification.show("Failed to remove product " + produktNameTxt.getValue() + ". Please try again!");
           }
