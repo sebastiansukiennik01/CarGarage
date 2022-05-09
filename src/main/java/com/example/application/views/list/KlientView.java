@@ -84,7 +84,7 @@ public class KlientView extends VerticalLayout {
      */
 
     static Grid<Klient> grid = new Grid<>(Klient.class, false);
-    public static Klienci klienci;
+    public static Klienci klienci = new Klienci();
     KlientForm klientForm;
 
     //for Samochod dialog window

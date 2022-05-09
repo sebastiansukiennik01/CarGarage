@@ -1,9 +1,6 @@
 package com.example.application.views.list;
 
-import com.example.application.Klient;
-import com.example.application.Produkt;
-import com.example.application.Samochod;
-import com.example.application.Usluga;
+import com.example.application.*;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -17,6 +14,9 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.Route;
+import org.springframework.beans.factory.BeanCreationException;
+
+import java.sql.SQLException;
 
 @Route(value = "faktura-view", layout = MainLayout.class)
 public class FakturaView extends VerticalLayout {
@@ -47,14 +47,14 @@ public class FakturaView extends VerticalLayout {
     }
 
     private void configureForm(){
+
         clientCmb.setItems(KlientView.klienci.getKlientList());
-
-        //clientCmb.addValueChangeListener(valueChangeEvent -> {
-          //  carCmb.setItems(clientCmb.getValue().getCars().getSamochodList());
-       // });
-
         productCmb.setItems(ProduktView.products.getProduktList());
         serviceCmb.setItems(UslugiView.uslugi.getUslugiList());
+
+        clientCmb.addValueChangeListener(valueChangeEvent -> {
+            carCmb.setItems(clientCmb.getValue().getCars().getSamochodList());
+        });
 
         clientCmb.setItemLabelGenerator(k -> k.getImie() + " " + k.getNazwisko() + ", " + k.getNrTelefonu());
         carCmb.setItemLabelGenerator(s -> s.getMarka() + " " + s.getModel() + ", Nr rej: " + s.getNrRejstracyjny());
@@ -111,7 +111,6 @@ public class FakturaView extends VerticalLayout {
             Notification.show("An error occurred. Please try again");
             Notification.show(e.getMessage());
         }
-
     }
 
     private void clear(ClickEvent<Button> buttonClickEvent){

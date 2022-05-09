@@ -68,7 +68,8 @@ public class Klient {
     public Klient(String imie, String nazwisko, String nrTelefonu) throws WrongNumberException {
         setImie(imie);
         setNazwisko(nazwisko);
-        setNrTelefonu(nrTelefonu);
+        //setNrTelefonu(nrTelefonu);
+        this.nrTelefonu = nrTelefonu;
         this.cars = new Samochody();
     }
 

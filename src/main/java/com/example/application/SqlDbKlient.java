@@ -24,6 +24,7 @@ public class SqlDbKlient {
         try(Connection cnn = DriverManager.getConnection(cnnString); Statement statement = cnn.createStatement()){
             rs = statement.executeQuery("SELECT * FROM Clients");
             while(rs.next()){
+                System.out.println(rs.getString("PhoneNumber") + ", " + rs.getString("Name") + ", " +  rs.getString("Surname"));
                 clients.dodajKlienta(new Klient(rs.getString("PhoneNumber"), rs.getString("Name"), rs.getString("Surname")));
             }
         }catch(SQLException | CustomerExistsException e){
