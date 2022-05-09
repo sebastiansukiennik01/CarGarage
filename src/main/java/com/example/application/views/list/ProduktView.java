@@ -3,6 +3,7 @@ package com.example.application.views.list;
 import com.example.application.Klient;
 import com.example.application.Produkt;
 import com.example.application.Produkty;
+import com.example.application.SqlDbProdukt;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.grid.Grid;
@@ -13,13 +14,14 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
 import javax.validation.constraints.Null;
+import java.sql.SQLException;
 import java.util.stream.Stream;
 
 @Route(value = "produkt-view", layout = MainLayout.class)
 public class ProduktView extends VerticalLayout {
 
     static Grid<Produkt> grid = new Grid<>(Produkt.class, false);
-    static Produkty productsList = new Produkty(); //tutaj musi być productList = cała lista produktów z bazy danych
+    static Produkty products;
     ProduktForm produktForm;
 
     public Grid<Produkt> getGrid() {
@@ -58,6 +60,12 @@ public class ProduktView extends VerticalLayout {
             grid.addColumn(Produkt::getCena).setHeader("Price").setSortable(true);
             grid.addColumn(Produkt::getJednostka).setHeader("Units");
             grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        }
+        try{
+            products = SqlDbProdukt.getProducts();
+            grid.setItems(products.getProduktList());
+        }catch (SQLException e){
+            Notification.show("Failed to load Products from database! Please restart application.");
         }
     }
 

@@ -53,7 +53,7 @@ public class FakturaView extends VerticalLayout {
           //  carCmb.setItems(clientCmb.getValue().getCars().getSamochodList());
        // });
 
-        productCmb.setItems(ProduktView.productsList.getProduktList());
+        productCmb.setItems(ProduktView.products.getProduktList());
         serviceCmb.setItems(UslugiView.uslugiList.getUslugiList());
 
         clientCmb.setItemLabelGenerator(k -> k.getImie() + " " + k.getNazwisko() + ", " + k.getNrTelefonu());

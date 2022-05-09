@@ -58,7 +58,7 @@ public class KlientForm extends FormLayout {
             KlientView.grid.setItems(KlientView.klienci.getKlientList()); //update the greed with new klient list
 
             Notification.show("Succesfully added: " + this.imieTxt.getValue() + " " + this.nazwiskoTxt.getValue() + " " + this.nrTelefonuTxt.getValue());
-        } catch (/*WrongNumberException*/  CustomerExistsException e) {
+        } catch (WrongNumberException | CustomerExistsException e) {
             Notification.show(e.getMessage());
         } catch(Exception e){
             Notification.show("An error occurred. Please try again");

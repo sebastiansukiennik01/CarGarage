@@ -6,6 +6,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
@@ -83,7 +84,7 @@ public class KlientView extends VerticalLayout {
      */
 
     static Grid<Klient> grid = new Grid<>(Klient.class, false);
-    public static Klienci klienci = SqlDbKlient.getClients(); //tutaj musi być productList = cała lista produktów z bazy danych
+    public static Klienci klienci;
     KlientForm klientForm;
 
     //for Samochod dialog window
@@ -147,12 +148,14 @@ public class KlientView extends VerticalLayout {
             grid.getColumns().forEach(col -> col.setAutoWidth(true));
         }
 
-        ArrayList<Klient> klienciList = klienci.getKlientList();
-        if (klienciList != null) {
-            grid.setItems(klienciList);
+        try{
+            klienci = SqlDbKlient.getClients();
+            ArrayList<Klient> klienciList = klienci.getKlientList();
+            if (klienciList != null)
+                grid.setItems(klienciList);
+        }catch (WrongNumberException e){
+            Notification.show("Failed to load Clients from database! Please restart application.");
         }
-
-
     }
 
     public void configureForm(){

@@ -38,18 +38,3 @@ public class Application extends SpringBootServletInitializer implements AppShel
 
 }
 
-
-@Component
-@RequiredArgsConstructor
-class SqlServerDEmo{
-
-    private final JdbcTemplate template;
-
-    @EventListener(ApplicationReadyEvent.class)
-    public void ready(){
-
-        List<Klient> klientList = this.template.query("SELECT * FROM Clients",
-                (resultSet, i) -> new Klient(resultSet.getString("PhoneNumber"), resultSet.getString("Name"), resultSet.getString("Surname")));
-        klientList.forEach(System.out::println);
-    }
-}

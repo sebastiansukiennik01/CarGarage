@@ -1,7 +1,7 @@
 package com.example.application;
 
 public class Produkt {
-    public enum jednostkaEnum {kg, litr, szt}
+    public enum jednostkaEnum {kg, litr, sztuka}
     static int nrProduktu = 0;
     String nazwa;
     double ilosc;

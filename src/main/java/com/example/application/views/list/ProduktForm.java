@@ -2,6 +2,7 @@ package com.example.application.views.list;
 
 import com.example.application.Produkt;
 import com.example.application.Produkty;
+import com.example.application.SqlDbProdukt;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.Text;
@@ -21,6 +22,7 @@ import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.dom.ElementFactory;
 import jdk.jshell.spi.ExecutionControlProvider;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -69,29 +71,38 @@ public class ProduktForm extends FormLayout {
               this.cenaNmb.getValue(),
               this.jednostkaCmb.getValue());
 
-      ProduktView.productsList.addProducts(p);
-      ProduktView.grid.setItems(ProduktView.productsList.getProduktList());
+      SqlDbProdukt.insertProdukt(p);
+      ProduktView.products.addProducts(p);
+      ProduktView.grid.setItems(ProduktView.products.getProduktList());
 
       Notification.show("Succesfully added: " + this.produktNameTxt.getValue() + " " + this.iloscNmb.getValue() + " "  + this.cenaNmb.getValue() + "/" + this.jednostkaCmb.getValue());
+    }catch (SQLException e){
+      Notification.show("Failed to save product " + produktNameTxt.getValue() + ". Please try again!");
     }catch (Exception e){
-      Notification.show("An error occured. Please try again");
+      Notification.show("An error occurred. Please restart the application and try again!");
     }
   }
 
   private void remove(ClickEvent event) {
-    try{
+    try {
       String message = "";
       Set<Produkt> selected = ProduktView.grid.getSelectedItems();
-      if (selected.size() > 0){
-        for(Produkt p : selected){
-          ProduktView.productsList.removeProduct(p);
-          message = message.concat(p.getNrProduktu() + " " + p.getNazwa() + " " + p.getIlosc() + " "  + p.getCena() + "/" + p.getJednostka() + "\n");
+      if (selected.size() > 0) {
+        for (Produkt p : selected) {
+          try{
+            SqlDbProdukt.removeProduct(p);
+            ProduktView.products.removeProduct(p);
+            message = message.concat(p.getNrProduktu() + " " + p.getNazwa() + " " + p.getIlosc() + " " + p.getCena() + "/" + p.getJednostka() + "\n");
+            Notification.show("Succesfully deleted: " + message);
+            ProduktView.grid.setItems(ProduktView.products.getProduktList());
+          }catch (SQLException e){
+            Notification.show("Failed to remove product " + produktNameTxt.getValue() + ". Please try again!");
+          }
         }
-        ProduktView.grid.setItems(ProduktView.productsList.getProduktList());
       }
-      Notification.show("Succesfully deleted: " + message);
-    }catch (Exception e){
-      Notification.show("An error occured. Please try again");
+    }
+    catch (Exception e){
+      Notification.show("An error occurred. Please restart the application and try again!");
     }
 
   }

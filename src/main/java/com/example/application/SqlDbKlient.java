@@ -8,7 +8,7 @@ import java.sql.*;
 
 public class SqlDbKlient {
 
-    private static String cnnString =
+    private static final String cnnString =
             "jdbc:sqlserver://tomeksolarskiserver.database.windows.net:1433;" +
                     "database=GarageDB;" +
                     "user=tomek@tomeksolarskiserver;" +
@@ -18,13 +18,10 @@ public class SqlDbKlient {
                     "hostNameInCertificate=*.database.windows.net;" +
                     "loginTimeout=30;";
 
-    public static Klienci getClients(){
-        System.out.println("performing setup..");
-        System.out.println("selecting data..");
-
+    public static Klienci getClients() throws WrongNumberException{
         Klienci clients = new Klienci();
         ResultSet rs = null;
-        try(Connection cnn = DriverManager.getConnection(cnnString); Statement statement = cnn.createStatement();){
+        try(Connection cnn = DriverManager.getConnection(cnnString); Statement statement = cnn.createStatement()){
             rs = statement.executeQuery("SELECT * FROM Clients");
             while(rs.next()){
                 System.out.println(rs.getString(1) + ", " + rs.getString(2) + ", " + rs.getString(3));
@@ -36,16 +33,16 @@ public class SqlDbKlient {
         return clients;
     }
 
-    public static void insertKlient(Klient client){
+    public static void insertKlient(Klient client) throws SQLException{
         System.out.println("inserting client..");
         String sql = "INSERT INTO Clients (PhoneNumber, Name, Surname) VALUES ('" + client.getNrTelefonu() + "', '" + client.getImie() + "', '" + client.getNazwisko() + "');";
         try(Connection cnn = DriverManager.getConnection(cnnString);
-        PreparedStatement statement = cnn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);){
+        PreparedStatement statement = cnn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
             ResultSet rs = null;
             statement.execute();
-
         }catch (SQLException e){
             e.printStackTrace();
+            throw e;
         }
     }
 
@@ -53,7 +50,7 @@ public class SqlDbKlient {
         System.out.println("inserting client..");
         String sql = "DELETE FROM Clients WHERE PhoneNumber='" + client.getNrTelefonu() + "';";
         try(Connection cnn = DriverManager.getConnection(cnnString);
-            PreparedStatement statement = cnn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);){
+            PreparedStatement statement = cnn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
             ResultSet rs = null;
             statement.execute();
         }catch (SQLException e){

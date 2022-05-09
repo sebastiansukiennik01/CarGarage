@@ -65,10 +65,10 @@ public class Klient {
     }
 
     //constructors
-    public Klient(String imie, String nazwisko, String nrTelefonu)  {
+    public Klient(String imie, String nazwisko, String nrTelefonu) throws WrongNumberException {
         setImie(imie);
         setNazwisko(nazwisko);
-        this.nrTelefonu = nrTelefonu;
+        setNrTelefonu(nrTelefonu);
         this.cars = new Samochody();
     }
 
