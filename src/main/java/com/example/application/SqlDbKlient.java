@@ -38,8 +38,7 @@ public class SqlDbKlient {
 
     public static void insertKlient(Klient client){
         System.out.println("inserting client..");
-        String sql = "INSERT INTO Clients (PhoneNumber, Name, Surname)" +
-                " VALUES (123123123, Maciej, Nagly);";
+        String sql = "INSERT INTO Clients (PhoneNumber, Name, Surname) VALUES ('" + client.getNrTelefonu() + "', '" + client.getImie() + "', '" + client.getNazwisko() + "');";
         try(Connection cnn = DriverManager.getConnection(cnnString);
         PreparedStatement statement = cnn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);){
             ResultSet rs = null;
@@ -48,11 +47,18 @@ public class SqlDbKlient {
         }catch (SQLException e){
             e.printStackTrace();
         }
-
     }
 
     public static void removeKlient(Klient client){
-
+        System.out.println("inserting client..");
+        String sql = "DELETE FROM Clients WHERE PhoneNumber='" + client.getNrTelefonu() + "';";
+        try(Connection cnn = DriverManager.getConnection(cnnString);
+            PreparedStatement statement = cnn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);){
+            ResultSet rs = null;
+            statement.execute();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 }
 
