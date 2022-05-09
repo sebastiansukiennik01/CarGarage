@@ -100,8 +100,7 @@ public class ProduktForm extends FormLayout {
           }
         }
       }
-    }
-    catch (Exception e){
+    } catch (Exception e){
       Notification.show("An error occurred. Please restart the application and try again!");
     }
 

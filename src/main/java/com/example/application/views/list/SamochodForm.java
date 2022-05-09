@@ -14,9 +14,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 
+import java.sql.SQLException;
 import java.util.Set;
 
 public class SamochodForm extends FormLayout {
+
+    Klient currentClient;
     H2 naglowek = new H2("Dodaj samochod");
     TextField modelTxt = new TextField("Model");
     TextField nrRejestracyjnyTxt = new TextField("Numer Rejestracyjny");
@@ -26,7 +29,8 @@ public class SamochodForm extends FormLayout {
     Button usunBtn = new Button("Usun", this::remove);
     Button zamknijBtn = new Button("Zamknij", this::close);
 
-    public SamochodForm(){
+    public SamochodForm(Klient klient){
+        this.currentClient = klient;
         addClassName("uslugi-form");
         markaCmb.setItems(Samochod.markaEnum.values());
 
@@ -62,19 +66,21 @@ public class SamochodForm extends FormLayout {
     private void save(ClickEvent event) {
         try{
             Samochod s = new Samochod(nrRejestracyjnyTxt.getValue(),
-                    (int) Math.round(rocznikNmb.getValue()),
+                    String.valueOf((int) Math.round(rocznikNmb.getValue())),
                     modelTxt.getValue(),
                     markaCmb.getValue());
 
+            SqlDbSamochod.insertCar(s, this.currentClient);
             KlientView.samochodyList.addSamochod(s);
             KlientView.samochodGrid.setItems(KlientView.samochodyList.getSamochodList());
 
             Notification.show("Succesfully added: " + nrRejestracyjnyTxt.getValue() + " " + markaCmb.getValue() + modelTxt.getValue());
-        }catch (CarExistsException e){
+        }catch (CarExistsException e) {
             Notification.show(e.getMessage());
+        }catch (SQLException e) {
+            Notification.show("Failed to save product " + nrRejestracyjnyTxt.getValue() + ". Please try again!");
         }catch (Exception e){
-            Notification.show("An error occured. Please try again");
-            Notification.show(e.getMessage());
+            Notification.show("An error occurred. Please restart the application and try again!");
         }
     }
 
@@ -84,15 +90,19 @@ public class SamochodForm extends FormLayout {
             Set<Samochod> selected = KlientView.samochodGrid.getSelectedItems();
             if (selected.size() > 0){
                 for(Samochod s : selected){
-                    KlientView.samochodyList.removeSamochod(s);
-                    message = message.concat(s.getNrRejstracyjny() + " " + s.getMarka() + " " + s.getModel() + "\n");
+                    try{
+                        SqlDbSamochod.removeCar(s);
+                        KlientView.samochodyList.removeSamochod(s);
+                        message = message.concat(s.getNrRejstracyjny() + " " + s.getMarka() + " " + s.getModel() + "\n");
+                        KlientView.samochodGrid.setItems(KlientView.samochodyList.getSamochodList());
+                        Notification.show("Succesfully deleted: " + message);
+                    }catch (SQLException e){
+                        Notification.show("Failed to remove product " + nrRejestracyjnyTxt.getValue() + ". Please try again!");
+                    }
                 }
-                KlientView.samochodGrid.setItems(KlientView.samochodyList.getSamochodList());
             }
-            Notification.show("Succesfully deleted: " + message);
         }catch (Exception e){
-            Notification.show("An error occured. Please try again");
-            Notification.show(e.getMessage());
+            Notification.show("An error occurred. Please restart the application and try again!");
         }
     }
 

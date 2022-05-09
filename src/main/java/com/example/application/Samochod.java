@@ -4,7 +4,7 @@ package com.example.application;
 public class Samochod {
     public enum markaEnum {Ford, Fiat, Opel, Audi, Ferrari}
     String nrRejstracyjny;
-    int rocznik;
+    String rocznik;
     String model;
     markaEnum marka;
 
@@ -17,11 +17,11 @@ public class Samochod {
         this.nrRejstracyjny = nrRejstracyjny;
     }
 
-    public int getRocznik() {
+    public String getRocznik() {
         return rocznik;
     }
 
-    public void setRocznik(int rocznik) {
+    public void setRocznik(String rocznik) {
         this.rocznik = rocznik;
     }
 
@@ -41,7 +41,7 @@ public class Samochod {
         this.marka = marka;
     }
 
-    public Samochod(String nrRejstracyjny, int rocznik, String model, Samochod.markaEnum marka) {
+    public Samochod(String nrRejstracyjny, String rocznik, String model, Samochod.markaEnum marka) {
         this.nrRejstracyjny = nrRejstracyjny;
         this.rocznik = rocznik;
         this.model = model;

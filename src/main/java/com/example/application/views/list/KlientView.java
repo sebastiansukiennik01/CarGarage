@@ -168,7 +168,7 @@ public class KlientView extends VerticalLayout {
         dialog = new Dialog();
         samochodyList = klient.getCars();
 
-        configureCarForm(); //sets up carForm
+        configureCarForm(klient); //sets up carForm
         configureCarGrid(klient);  //sets up carGrid
         dialog.add(new H1("Customers cars"));
 
@@ -188,16 +188,18 @@ public class KlientView extends VerticalLayout {
         samochodGrid.setHeight("1000px");
         samochodGrid.setSelectionMode(Grid.SelectionMode.MULTI);
 
-        ArrayList<Samochod> customerCars = klient.getCars().getSamochodList();
-        if (customerCars != null) {
-            samochodGrid.setItems(customerCars);
+        try{
+            samochodGrid.setItems(SqlDbSamochod.getCars(klient.getNrTelefonu()).getSamochodList());
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
     }
 
-    public void configureCarForm(){
-        samochodForm = new SamochodForm();
+    public void configureCarForm(Klient klient){
+        samochodForm = new SamochodForm(klient);
         samochodForm.setWidth("200px");
     }
 }
