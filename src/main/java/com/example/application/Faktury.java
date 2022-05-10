@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Faktury {
+public class Faktury implements FakturyInterface {
 
     //fields
     List<Faktura> listaFaktur;
@@ -13,7 +13,6 @@ public class Faktury {
     public List<Faktura> getListaFaktur() {
         return listaFaktur;
     }
-
     public void setListaFaktur() {
         this.listaFaktur = new ArrayList<>();
     }
@@ -22,7 +21,6 @@ public class Faktury {
     public Faktury(List<Faktura> listaFaktur) {
         this.listaFaktur = listaFaktur;
     }
-
     public Faktury() {
         this.listaFaktur = new ArrayList<>();
     }

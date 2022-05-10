@@ -2,7 +2,7 @@ package com.example.application;
 
 import java.sql.*;
 
-public class SqlDbFaktura implements SqlDbFakturaInterface {
+public class SqlDbFaktura {
 
     private static final String cnnString =
             "jdbc:sqlserver://tomeksolarskiserver.database.windows.net:1433;" +
@@ -15,13 +15,11 @@ public class SqlDbFaktura implements SqlDbFakturaInterface {
                     "loginTimeout=30;";
 
 
-    @Override
-    public void insertInvoice(Faktura invoice, String date) {
+    public static void insertInvoice(Faktura invoice, String date) {
 
     }
 
-    @Override
-    public void removeInvoice(Faktura invoice) {
+    public static void removeInvoice(Faktura invoice) {
 
     }
 }

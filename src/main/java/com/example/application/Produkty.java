@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Produkty {
+public class Produkty implements ProduktyInterface {
 
     //fields
     List<Produkt> produktList;
@@ -13,7 +13,6 @@ public class Produkty {
     public List<Produkt> getProduktList() {
         return produktList;
     }
-
     public void setProduktList(List<Produkt> produktList) {
         this.produktList = produktList;
     }
@@ -22,7 +21,6 @@ public class Produkty {
     public Produkty() {
         this.produktList = new ArrayList<>();
     }
-
     public Produkty(ArrayList<Produkt> produktList){
         this.produktList = produktList;
     }
