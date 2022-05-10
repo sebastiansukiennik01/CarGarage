@@ -1,9 +1,10 @@
 package com.example.application;
 
+
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class Samochody {
+public class Samochody implements SamochodyInterface {
 
     //fields
     ArrayList<Samochod> samochodList = new ArrayList<>();
@@ -12,15 +13,12 @@ public class Samochody {
     public ArrayList<Samochod> getSamochodList() {
         return samochodList;
     }
-
     public void setSamochodList(ArrayList<Samochod> samochodList) {
         this.samochodList = samochodList;
     }
 
     //constructors
-    public Samochody() {
-    }
-
+    public Samochody() {}
     public Samochody(ArrayList<Samochod> samochodList) {
         this.samochodList = samochodList;
     }

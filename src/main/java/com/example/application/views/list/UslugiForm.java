@@ -1,6 +1,7 @@
 package com.example.application.views.list;
 
 import com.example.application.Produkt;
+import com.example.application.SqlDbUsluga;
 import com.example.application.Usluga;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Key;
@@ -14,6 +15,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 
+import java.sql.SQLException;
 import java.util.Set;
 
 public class UslugiForm extends FormLayout {
@@ -48,10 +50,14 @@ public class UslugiForm extends FormLayout {
         try{
             Usluga u = new Usluga(this.nameTxt.getValue(),
                     this.priceNmb.getValue());
-            UslugiView.uslugiList.addUsluga(u);
-            UslugiView.grid.setItems(UslugiView.uslugiList.getUslugiList());
+            SqlDbUsluga.insertService(u);
+            UslugiView.uslugi.addUsluga(u);
+            UslugiView.grid.setItems(UslugiView.uslugi.getUslugiList());
             Notification.show("Succesfully added: " + this.nameTxt.getValue() + " " + this.priceNmb.getValue());
-        }catch (Exception e){
+        }catch(SQLException e){
+            Notification.show("Failed to save service " + nameTxt.getValue() + ". Please try again!");
+        }
+        catch (Exception e){
             Notification.show("An error occured. Please try again");
         }
     }
@@ -62,14 +68,19 @@ public class UslugiForm extends FormLayout {
             Set<Usluga> selected = UslugiView.grid.getSelectedItems();
             if (selected.size() > 0){
                 for(Usluga u : selected){
-                    UslugiView.uslugiList.removeUsluga(u);
-                    message = message.concat(u.getNazwa() + " " + u.getKoszt() + "\n");
+                    try {
+                        SqlDbUsluga.removeService(u);
+                        UslugiView.uslugi.removeUsluga(u);
+                        message = message.concat(u.getNazwa() + " " + u.getKoszt() + "\n");
+                        UslugiView.grid.setItems(UslugiView.uslugi.getUslugiList());
+                        Notification.show("Successfully deleted: " + message);
+                    }catch (SQLException e){
+                        Notification.show("Failed to remove service " + nameTxt.getValue() + ". Please try again!");
+                    }
                 }
-                UslugiView.grid.setItems(UslugiView.uslugiList.getUslugiList());
             }
-            Notification.show("Succesfully deleted: " + message);
         }catch (Exception e){
-            Notification.show("An error occured. Please try again");
+            Notification.show("An error occurred. Please restart the application and try again!");
         }
     }
 }

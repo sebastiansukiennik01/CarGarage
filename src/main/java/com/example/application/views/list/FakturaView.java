@@ -1,9 +1,6 @@
 package com.example.application.views.list;
 
-import com.example.application.Klient;
-import com.example.application.Produkt;
-import com.example.application.Samochod;
-import com.example.application.Usluga;
+import com.example.application.*;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -17,9 +14,9 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.Route;
+import org.springframework.beans.factory.BeanCreationException;
 
-import java.awt.*;
-import java.time.LocalDate;
+import java.sql.SQLException;
 
 @Route(value = "faktura-view", layout = MainLayout.class)
 public class FakturaView extends VerticalLayout {
@@ -50,14 +47,24 @@ public class FakturaView extends VerticalLayout {
     }
 
     private void configureForm(){
-        clientCmb.setItems(KlientView.klienciList.getKlientList());
+        // load data to variables in each view
+        try{
+            KlientView.klienci = SqlDbKlient.getClients();
+            ProduktView.products = SqlDbProdukt.getProducts();
+            UslugiView.uslugi = SqlDbUsluga.getServices();
+        }catch (WrongNumberException | SQLException e){
+            e.printStackTrace();
+        }
+
+        clientCmb.setItems(KlientView.klienci.getKlientList());
+        productCmb.setItems(ProduktView.products.getProduktList());
+        serviceCmb.setItems(UslugiView.uslugi.getUslugiList());
 
         clientCmb.addValueChangeListener(valueChangeEvent -> {
-            carCmb.setItems(clientCmb.getValue().getCars().getSamochodList());
+            if (clientCmb.getValue() != null) {
+                carCmb.setItems(SqlDbSamochod.getCars(clientCmb.getValue().getNrTelefonu()).getSamochodList());
+            }
         });
-
-        productCmb.setItems(ProduktView.productsList.getProduktList());
-        serviceCmb.setItems(UslugiView.uslugiList.getUslugiList());
 
         clientCmb.setItemLabelGenerator(k -> k.getImie() + " " + k.getNazwisko() + ", " + k.getNrTelefonu());
         carCmb.setItemLabelGenerator(s -> s.getMarka() + " " + s.getModel() + ", Nr rej: " + s.getNrRejstracyjny());
@@ -92,7 +99,6 @@ public class FakturaView extends VerticalLayout {
         return horizontalLayout;
     }
 
-    // ta cała funkcja jest do naprawienia, bo nie wypisuje wyniku do summaryTextArea
     private void summary(ClickEvent<Button> buttonClickEvent) {
         try{
             Klient k = this.clientCmb.getValue();
@@ -106,6 +112,8 @@ public class FakturaView extends VerticalLayout {
                     p.getNazwa() + " " + p.getCena() + "zł / " + p.getJednostka() + "\n" +
                     d + "\n" +
                     u.getNazwa() + " " + u.getKoszt();
+
+            SqlDbFaktura.insertInvoice(new Faktura(k, s), d);
             this.summaryTxtArea.setValue(result);
             Notification.show("Invoice generated succesfully!");
         }catch (NullPointerException e){
@@ -114,7 +122,6 @@ public class FakturaView extends VerticalLayout {
             Notification.show("An error occurred. Please try again");
             Notification.show(e.getMessage());
         }
-
     }
 
     private void clear(ClickEvent<Button> buttonClickEvent){

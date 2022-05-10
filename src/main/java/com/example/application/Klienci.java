@@ -3,14 +3,13 @@ package com.example.application;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class Klienci {
+public class Klienci implements KlienciInterface {
     public ArrayList<Klient> klientList;
 
     //accessors
     public ArrayList<Klient> getKlientList() {
         return klientList;
     }
-
     public void setKlientList(ArrayList<Klient> klientList) {
         this.klientList = klientList;
     }

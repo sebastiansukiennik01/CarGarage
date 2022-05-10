@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Faktury {
+public class Faktury implements FakturyInterface {
 
     //fields
     List<Faktura> listaFaktur;
