@@ -70,14 +70,9 @@ public class SamochodForm extends FormLayout {
                     modelTxt.getValue(),
                     markaCmb.getValue());
 
-            //testowanie
-            System.out.println(this.currentClient.getNrTelefonu());
-
-
-
-            SqlDbSamochod.insertCar(s, this.currentClient);
             KlientView.samochodyList.addSamochod(s);
-            KlientView.samochodGrid.setItems(KlientView.samochodyList.getSamochodList());
+            SqlDbSamochod.insertCar(s, this.currentClient);
+            KlientView.samochodGrid.setItems(SqlDbSamochod.getCars(this.currentClient.getNrTelefonu()).getSamochodList());
 
             Notification.show("Succesfully added: " + nrRejestracyjnyTxt.getValue() + " " + markaCmb.getValue() + modelTxt.getValue());
         }catch (CarExistsException e) {
@@ -99,12 +94,12 @@ public class SamochodForm extends FormLayout {
                         SqlDbSamochod.removeCar(s);
                         KlientView.samochodyList.removeSamochod(s);
                         message = message.concat(s.getNrRejstracyjny() + " " + s.getMarka() + " " + s.getModel() + "\n");
-                        KlientView.samochodGrid.setItems(KlientView.samochodyList.getSamochodList());
                         Notification.show("Succesfully deleted: " + message);
                     }catch (SQLException e){
                         Notification.show("Failed to remove product " + nrRejestracyjnyTxt.getValue() + ". Please try again!");
                     }
                 }
+                KlientView.samochodGrid.setItems(SqlDbSamochod.getCars(currentClient.getNrTelefonu()).getSamochodList());
             }
         }catch (Exception e){
             Notification.show("An error occurred. Please restart the application and try again!");

@@ -53,8 +53,8 @@ public class KlientForm extends FormLayout {
                     this.nazwiskoTxt.getValue(),
                     this.nrTelefonuTxt.getValue());
 
-            SqlDbKlient.insertKlient(k);        //inserts client to database
             KlientView.klienci.dodajKlienta(k);  // add client to local variable, to not call the database again
+            SqlDbKlient.insertKlient(k);        //inserts client to database
             KlientView.grid.setItems(KlientView.klienci.getKlientList()); //update the greed with new klient list
 
             Notification.show("Succesfully added: " + this.imieTxt.getValue() + " " + this.nazwiskoTxt.getValue() + " " + this.nrTelefonuTxt.getValue());
