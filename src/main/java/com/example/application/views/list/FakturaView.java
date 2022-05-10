@@ -47,13 +47,23 @@ public class FakturaView extends VerticalLayout {
     }
 
     private void configureForm(){
+        // load data to variables in each view
+        try{
+            KlientView.klienci = SqlDbKlient.getClients();
+            ProduktView.products = SqlDbProdukt.getProducts();
+            UslugiView.uslugi = SqlDbUsluga.getServices();
+        }catch (WrongNumberException | SQLException e){
+            e.printStackTrace();
+        }
+
+
 
         clientCmb.setItems(KlientView.klienci.getKlientList());
         productCmb.setItems(ProduktView.products.getProduktList());
         serviceCmb.setItems(UslugiView.uslugi.getUslugiList());
 
         clientCmb.addValueChangeListener(valueChangeEvent -> {
-            carCmb.setItems(clientCmb.getValue().getCars().getSamochodList());
+            carCmb.setItems(SqlDbSamochod.getCars(clientCmb.getValue().getNrTelefonu()).getSamochodList());
         });
 
         clientCmb.setItemLabelGenerator(k -> k.getImie() + " " + k.getNazwisko() + ", " + k.getNrTelefonu());
@@ -89,7 +99,6 @@ public class FakturaView extends VerticalLayout {
         return horizontalLayout;
     }
 
-    // ta cała funkcja jest do naprawienia, bo nie wypisuje wyniku do summaryTextArea
     private void summary(ClickEvent<Button> buttonClickEvent) {
         try{
             Klient k = this.clientCmb.getValue();
@@ -103,6 +112,7 @@ public class FakturaView extends VerticalLayout {
                     p.getNazwa() + " " + p.getCena() + "zł / " + p.getJednostka() + "\n" +
                     d + "\n" +
                     u.getNazwa() + " " + u.getKoszt();
+
             this.summaryTxtArea.setValue(result);
             Notification.show("Invoice generated succesfully!");
         }catch (NullPointerException e){

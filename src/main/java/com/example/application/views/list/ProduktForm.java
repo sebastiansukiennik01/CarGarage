@@ -66,7 +66,8 @@ public class ProduktForm extends FormLayout {
 
   private void save(ClickEvent event) {
     try{
-      Produkt p = new Produkt(this.produktNameTxt.getValue(),
+      Produkt p = new Produkt(
+              this.produktNameTxt.getValue(),
               this.iloscNmb.getValue(),
               this.cenaNmb.getValue(),
               this.jednostkaCmb.getValue());

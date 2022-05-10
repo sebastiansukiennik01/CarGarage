@@ -20,7 +20,8 @@ public class SqlDbProdukt {
         try(Connection cnn = DriverManager.getConnection(cnnString); Statement statement = cnn.createStatement()){
             rs = statement.executeQuery("SELECT * FROM Products");
             while(rs.next()){
-                products.addProducts(new Produkt(rs.getString("Name"),
+                products.addProducts(new Produkt(rs.getInt("ProductID"),
+                        rs.getString("Name"),
                         rs.getFloat("Amount"),
                         rs.getFloat("Price"),
                         Produkt.jednostkaEnum.valueOf(rs.getString("Unit"))));
