@@ -63,6 +63,7 @@ public class Faktura {
     public void dodajUsluge(Usluga u){
         listaUslug.add(u);
     }
+
     public void dodajProdukt(Produkt p, Double i){
         listaProduktow.put(p, i);
     }

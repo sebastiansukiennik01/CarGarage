@@ -56,14 +56,14 @@ public class FakturaView extends VerticalLayout {
             e.printStackTrace();
         }
 
-
-
         clientCmb.setItems(KlientView.klienci.getKlientList());
         productCmb.setItems(ProduktView.products.getProduktList());
         serviceCmb.setItems(UslugiView.uslugi.getUslugiList());
 
         clientCmb.addValueChangeListener(valueChangeEvent -> {
-            carCmb.setItems(SqlDbSamochod.getCars(clientCmb.getValue().getNrTelefonu()).getSamochodList());
+            if (clientCmb.getValue() != null) {
+                carCmb.setItems(SqlDbSamochod.getCars(clientCmb.getValue().getNrTelefonu()).getSamochodList());
+            }
         });
 
         clientCmb.setItemLabelGenerator(k -> k.getImie() + " " + k.getNazwisko() + ", " + k.getNrTelefonu());
@@ -113,6 +113,7 @@ public class FakturaView extends VerticalLayout {
                     d + "\n" +
                     u.getNazwa() + " " + u.getKoszt();
 
+            SqlDbFaktura.insertInvoice(new Faktura(k, s), d);
             this.summaryTxtArea.setValue(result);
             Notification.show("Invoice generated succesfully!");
         }catch (NullPointerException e){

@@ -13,6 +13,7 @@ public class Faktury implements FakturyInterface {
     public List<Faktura> getListaFaktur() {
         return listaFaktur;
     }
+
     public void setListaFaktur() {
         this.listaFaktur = new ArrayList<>();
     }
@@ -21,6 +22,7 @@ public class Faktury implements FakturyInterface {
     public Faktury(List<Faktura> listaFaktur) {
         this.listaFaktur = listaFaktur;
     }
+
     public Faktury() {
         this.listaFaktur = new ArrayList<>();
     }

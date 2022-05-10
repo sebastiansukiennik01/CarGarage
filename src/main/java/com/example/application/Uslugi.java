@@ -32,7 +32,7 @@ public class Uslugi implements UslugiInterface {
     }
     public void removeUsluga(Integer uslugaId){
         Optional<Usluga> uslugaToRemove = uslugiList.stream().filter(
-                usluga -> Usluga.getIdUslugi() == uslugaId
+                usluga -> usluga.getIdUslugi() == uslugaId
         ).findFirst();
         if (uslugaToRemove.isPresent()){
             uslugiList.remove(uslugaToRemove);

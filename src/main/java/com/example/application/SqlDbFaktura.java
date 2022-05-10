@@ -15,11 +15,16 @@ public class SqlDbFaktura {
                     "loginTimeout=30;";
 
 
-    public static void insertInvoice(Faktura invoice, String date) {
-
-    }
-
-    public static void removeInvoice(Faktura invoice) {
-
+    public static void insertInvoice(Faktura invoice, String date) throws SQLException {
+        ResultSet rs = null;
+        String sql = "INSERT INTO Invoices (LicenceNumber, PhoneNumber, Date) " +
+                "VALUES ('" + invoice.getSamochod().getNrRejstracyjny() + "', '" + invoice.getKlient().getNrTelefonu() + "', '" + date + "');";
+        try(Connection cnn = DriverManager.getConnection(cnnString);
+        PreparedStatement statement = cnn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);){
+            statement.execute();
+        }catch (SQLException e){
+            e.printStackTrace();
+            throw e;
+        }
     }
 }

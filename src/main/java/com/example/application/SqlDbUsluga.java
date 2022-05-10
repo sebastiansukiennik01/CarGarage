@@ -23,7 +23,7 @@ public class SqlDbUsluga {
         try (Connection cnn = DriverManager.getConnection(cnnString); Statement statement = cnn.createStatement()) {
             rs = statement.executeQuery(sql);
             while(rs.next()){
-                services.addUsluga(new Usluga(rs.getString("Name"), rs.getFloat("Price")));
+                services.addUsluga(new Usluga(rs.getInt("ServiceID"), rs.getString("Name"), rs.getFloat("Price")));
             }
         } catch (SQLException e) {
             e.printStackTrace();

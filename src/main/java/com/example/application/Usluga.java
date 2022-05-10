@@ -2,13 +2,13 @@ package com.example.application;
 
 public class Usluga {
 
-    public static int idUslugi = 1;
+    int idUslugi;
     String nazwa;
     double koszt;
 
-    public static int getIdUslugi() { return idUslugi; }
+    public int getIdUslugi() { return idUslugi; }
 
-    public static void setIdUslugi(int idUslugi) { Usluga.idUslugi = idUslugi; }
+    public void setIdUslugi(int idUslugi) { this.idUslugi = idUslugi; }
 
     public String getNazwa() { return nazwa; }
 
@@ -18,9 +18,13 @@ public class Usluga {
 
     public void setKoszt(double koszt) { this.koszt = koszt; }
 
-
     public Usluga(String nazwa, double koszt) {
-        setIdUslugi(getIdUslugi() + 1);
+        this.nazwa = nazwa;
+        this.koszt = koszt;
+    }
+
+    public Usluga(int idUslugi, String nazwa, double koszt) {
+        this.idUslugi = idUslugi;
         this.nazwa = nazwa;
         this.koszt = koszt;
     }
