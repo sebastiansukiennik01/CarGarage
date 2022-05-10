@@ -70,6 +70,11 @@ public class SamochodForm extends FormLayout {
                     modelTxt.getValue(),
                     markaCmb.getValue());
 
+            //testowanie
+            System.out.println(this.currentClient.getNrTelefonu());
+
+
+
             SqlDbSamochod.insertCar(s, this.currentClient);
             KlientView.samochodyList.addSamochod(s);
             KlientView.samochodGrid.setItems(KlientView.samochodyList.getSamochodList());

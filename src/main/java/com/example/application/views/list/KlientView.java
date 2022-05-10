@@ -193,7 +193,6 @@ public class KlientView extends VerticalLayout {
         }catch (Exception e){
             e.printStackTrace();
         }
-
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
     }
